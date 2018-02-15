@@ -6,17 +6,17 @@ F.A.Q.
 ===============================================================================================
 
 
-#Q: Where do I put my MIDI files ?
+**Q: Where do I put my MIDI files ?**
 
 A: Your MIDI files have to be in the data directory.
 
 
-#Q: Where do I find my CSV files ?
+**Q: Where do I find my CSV files ?**
 
 A: Generated CSV files can be found in the data/processed directory.
 
 
-#Q: How to output the MIDI files in the CSV format ? 
+**Q: How to output the MIDI files in the CSV format ?** 
 
 A: First, make sure you have midicsv installed on your computer. Then, run the following script :
 

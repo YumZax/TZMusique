@@ -7,4 +7,4 @@ for filename in ../data/*.mid
     mv ../data/*.csv ../data/processed
 done
 
-#TODO : Adapt those csv files to make them have simpler data
+python ../lib/simplify_midi.py

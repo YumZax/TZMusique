@@ -1,1 +1,3 @@
 data/processed/*
+data/unprocessed/*
+data/generated/*

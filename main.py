@@ -10,3 +10,53 @@ from lib.format_utils import *
 
 notes = processed_to_2d_array("./data/processed/beethoven_opus10_1.mid.csv.processed")
 
+numpy.random.seed(7)
+
+dataset = notes
+
+train_size = int(len(dataset) * 0.67)
+test_size = len(dataset) - train_size
+train = dataset[0:train_size]
+test = dataset[train_size:len(dataset)]
+
+def create_dataset(dataset, look_back=1):
+	dataX, dataY = [], []
+	for i in range(len(dataset)-look_back-1):
+		a = dataset[i:(i+look_back)]
+		dataX.append(a)
+		dataY.append(dataset[i + look_back])
+	return numpy.array(dataX), numpy.array(dataY)
+
+look_back = 1
+trainX, trainY = create_dataset(train, look_back)
+testX, testY = create_dataset(test, look_back)
+
+time_steps = trainX.shape[0]
+
+# 1 sample, 3849 time_steps, 3 features
+trainX = numpy.reshape(trainX, (1, trainX.shape[0], 3))
+testX = numpy.reshape(testX, (1, testX.shape[0], 3))
+
+print(trainX)
+print(trainX.shape)
+print(trainY)
+model = Sequential()
+model.add(LSTM(32, input_shape=(time_steps, 3)))
+model.add(Dense(3))
+model.compile(loss='mean_squared_error', optimizer='adam')
+model.fit(trainX, trainY, epochs=10, batch_size=1, verbose=2)
+
+trainPredict = model.predict(trainX)
+# testPredict = model.predict(testX)
+
+# invert predictions
+# trainPredict = scaler.inverse_transform(trainPredict)
+# trainY = scaler.inverse_transform([trainY])
+# testPredict = scaler.inverse_transform(testPredict)
+# testY = scaler.inverse_transform([testY])
+
+# calculate root mean squared error
+trainScore = math.sqrt(mean_squared_error(trainY[0], trainPredict[:,0]))
+print('Train Score: %.2f RMSE' % (trainScore))
+# testScore = math.sqrt(mean_squared_error(testY[0], testPredict[:,0]))
+# print('Test Score: %.2f RMSE' % (testScore))
